@@ -6,15 +6,21 @@ MAINTAINER Benjamin Renard <brenard@zionetrix.net>
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
-      rsyslog \
-      python3 \
-      python3-dev \
-      python3-pip \
-      supervisor \
-      redis-server \
-      ffmpeg && \
-      apt-get clean && \
-      rm -rf /var/lib/apt/lists/*
+    rsyslog \
+    python3 \
+    python3-dev \
+    python3-pip \
+    supervisor \
+    redis-server \
+    ffmpeg \
+    curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install deno (JS runtime for yt-dlp)
+RUN curl -fsSL https://deno.land/install.sh | sh
+ENV PATH="/root/.deno/bin:${PATH}"
+
 
 ADD requirements.txt /app/
 RUN pip install -r /app/requirements.txt
