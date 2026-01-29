@@ -6,19 +6,20 @@ MAINTAINER Benjamin Renard <brenard@zionetrix.net>
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
-    rsyslog \
-    python3 \
-    python3-dev \
-    python3-pip \
-    supervisor \
-    redis-server \
-    ffmpeg \
-    curl && \
+        rsyslog \
+        python3 \
+        python3-dev \
+        python3-pip \
+        supervisor \
+        redis-server \
+        ffmpeg \
+        curl && \
+    curl -fsSL https://deno.land/install.sh | sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://deno.land/install.sh | sh
-ENV PATH="/root/.deno/bin:${PATH}"
+ENV PATH="/root/.deno/bin:$PATH"
+
 
 
 
