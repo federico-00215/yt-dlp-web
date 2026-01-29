@@ -124,10 +124,25 @@ def download(id):
     with app.app_context():
         d = Download.find(id)
         opts = {
-            'outtmpl': os.path.join(d.downloads_path, '%(title)s-%(id)s.%(ext)s'),
-            'progress_hooks': [d.set_details],
-            'post_hooks': [d.set_filename],
-        }
+    'outtmpl': os.path.join(d.downloads_path, '%(title)s-%(id)s.%(ext)s'),
+    'progress_hooks': [d.set_details],
+    'post_hooks': [d.set_filename],
+
+    # ✅ evita che yt-dlp prenda playlist quando c’è &list=
+    'noplaylist': True,
+
+    # ✅ rendi yt-dlp più “tollerante” su rete/403 temporanei
+    'retries': 10,
+    'fragment_retries': 10,
+    'concurrent_fragment_downloads': 1,
+
+    # ✅ header più “browser-like”
+    'http_headers': {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept-Language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
+    },
+}
+
         y = YoutubeDL(params=opts)
         y.download([d.url])
 
